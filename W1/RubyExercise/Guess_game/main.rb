@@ -3,12 +3,21 @@ require 'pry'
 require 'colorize'
 require './game_class.rb'
 require './question_class.rb'
+
 i = 1
 players = []
 
 begin 
   puts "What is the name of player #{i}?"
   name = gets.chomp
+  until name != "" do
+    begin 
+      raise NameEmptyError
+    rescue
+      puts "You must enter a name:"
+    end
+  name = gets.chomp
+  end
   puts "Define your signified color:"
   color = gets.chomp.to_sym
   players[i-1]=Player.new(name,i,color)

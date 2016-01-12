@@ -1,4 +1,11 @@
 class Game
+  
+  def numeric?(string)
+    # `!!` converts parsed number to `true`
+    !!Kernel.Float(string) 
+  rescue TypeError, ArgumentError
+    false
+  end
 
   def begin(players)
     players = players
@@ -31,7 +38,16 @@ class Game
   end
 
   def outcome(question)
-    question.answer == gets.chomp.to_i
+    player_answer = gets.chomp
+    until numeric?(player_answer) do
+      begin
+        raise InvalidAnswerError
+      rescue
+        puts 'Not a valid answer type, re-enter please:'
+      end
+    player_answer = gets.chomp
+    end
+      player_answer.to_i == question.answer
   end
 
   def display_score_board(players)
