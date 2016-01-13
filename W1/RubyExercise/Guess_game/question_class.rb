@@ -10,8 +10,7 @@ class Question
     @sign = @rand_sign == 0 ? "+" : @rand_sign == 1 ? "-" : "*"        
   end
 
-  def display(current_player)
-    puts "#{current_player.colorized_name}, please answer:"
+  def display
     puts "#{@rand1} #{@sign} #{@rand2}"
   end 
 
