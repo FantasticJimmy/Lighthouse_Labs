@@ -49,10 +49,14 @@ class Barracks
     food < 3 || gold < 200 || lumber < 60 ? false : true
   end
   def train_seige
-    @gold = @gold - 200
-    @food = @food - 3
-    @lumber = @lumber - 60
-    Seige.new
+    if can_trai_siege
+      @gold = @gold - 200
+      @food = @food - 3
+      @lumber = @lumber - 60
+      Seige.new
+    else 
+      nil
+    end
   end
   def dead?
     health_points <= 0 ? true : false
