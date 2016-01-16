@@ -46,6 +46,8 @@ class Main
     if (STDIN.gets.chomp == "-show")
       post.comments
     end
+    else
+    return
   end
 
 end

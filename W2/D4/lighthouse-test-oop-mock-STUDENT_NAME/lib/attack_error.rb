@@ -1,0 +1,4 @@
+class AttackError < StandardError
+
+
+end

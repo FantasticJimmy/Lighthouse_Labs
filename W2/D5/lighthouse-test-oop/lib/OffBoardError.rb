@@ -1,0 +1,3 @@
+class OffBoardError < StandardError
+
+end

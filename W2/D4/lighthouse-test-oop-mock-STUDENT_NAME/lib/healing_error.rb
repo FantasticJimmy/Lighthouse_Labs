@@ -1,0 +1,3 @@
+class HealingError < StandardError
+
+end
