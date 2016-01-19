@@ -28,11 +28,12 @@ describe Robot do
       @yoojing.move_up
       @yoojing.move_up 
       @kat.move_left
-      @kat.move_left
-      @kat.move_down
+      @kat.move_up
+      @kat.move_up
+      @kat.move_up
 
 
-      expect(@robot.scann).to eql([@ed,@yoojing])
+      expect(@robot.scann).to eql([@ed,@yoojing,@kat]||[@yoojing,@ed,@kat])
 
     end
    end

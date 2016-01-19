@@ -32,7 +32,7 @@ describe Robot do
       @kat.move_left
       @kat.move_down
       expect(@kat.show_robots_positions_without_myself).to eql([[0,4],[0,-4],[0,-4],[4,0]])
-
+      @kat.set_robots
     end
    end
 

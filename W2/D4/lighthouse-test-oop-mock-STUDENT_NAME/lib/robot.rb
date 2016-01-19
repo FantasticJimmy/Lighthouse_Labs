@@ -23,8 +23,7 @@ class Robot
   end
 
   def self.show_robots_at(posi)
-    @@record.select {|robot| robot.position == posi    }
-
+    @@record.select {|robot| robot.position == posi }
   end
 
   def self.numbers_of_robot_mufced
@@ -98,19 +97,32 @@ class Robot
     weight 
   end 
 
-  def wound(damage)
+  def damage_shield(damage)
     if @shield_charge >= damage
-      damage = 0
       @shield_charge -= damage
+      damage = 0
     else 
       damage -= @shield_charge
       @shield_charge = 0
+      damage
     end
+  end
 
-    if damage > @health
-      @health = 0
+  def wound(damage_1,name = nil)
+    damage = damage_1
+    if name == "Bazuka"
+      if damage > @health
+        @health = 0
+      else
+        @health -= damage
+      end
     else
-      @health -= damage
+      damage = damage_shield(damage_1) 
+      if damage > @health
+        @health = 0
+      else
+        @health -= damage
+      end
     end
   end
 
@@ -132,13 +144,17 @@ class Robot
   def attack(enemy)
     if can_I_attack?(enemy)
       case
-        when @equipped_weapon == nil
-          enemy.wound(5)
-        when (@equipped_weapon.is_a? Weapon)
+        when (@equipped_weapon.is_a? Bazuka)
+          self.scann.each do |enemy_nearby|
+            @equipped_weapon.hit(enemy_nearby)
+          end
+        when (@equipped_weapon.is_a? Grenade)
           @equipped_weapon.hit(enemy)
           @equipped_weapon = nil
-        else
+        when (@equipped_weapon.is_a? Weapon)
           @equipped_weapon.hit(enemy)
+        else
+          enemy.wound(5)
       end
     else
       nil
@@ -166,13 +182,18 @@ class Robot
        ((item[0] - @position[0]).abs <= 1) && 
        ((item[1] - @position[1]).abs <= 1)
     end
-    arr = arr.uniq
+    #arr are the ones that are close to me
+    #but if they are on the same spot i need to just search one spot
+    new_arr = arr.uniq
     i = 0
+    robots = []
+    #I wanna to search number of times equavelent to the numbers of arr.length not new_arr.length since show_robots_at only match out 1 robot at a time
     while i < arr.length
-    robots = Robot.show_robots_at(arr[i])
+    robots << Robot.show_robots_at(new_arr[i])
     i += 1
     end
-    robots
+    #each search gonna give me a arr of robots
+    robots.flatten
   end
 
   def can_I_attack?(enemy)
@@ -180,7 +201,8 @@ class Robot
       ((enemy.position[0] - @position[0]).abs == 2 && enemy.position[1] == @position[1]) || 
       ((enemy.position[1] - @position[1]).abs ==2 && enemy.position[0] = @position[0])
     else
-  ((enemy.position[0] - @position[0]).abs + (enemy.position[1] - @position[1]).abs == 1 ) || (enemy.position == @position)
+  ((enemy.position[0] - @position[0]).abs + (enemy.position[1] - @position[1]).abs == 1 ) ||
+  (enemy.position == @position)
     end
   end
 

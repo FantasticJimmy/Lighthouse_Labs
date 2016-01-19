@@ -1,0 +1,101 @@
+Q1
+SELECT 
+e.ISBN
+ FROM 
+  editions AS e
+  INNER JOIN publishers as p ON e.publisher_id = p.id
+ WHERE p.name = 'Random House';
+
+
+
+Q2
+ SELECT 
+ e.ISBN,b.title
+ FROM 
+  editions AS e
+  INNER JOIN publishers as p ON e.publisher_id = p.id
+    INNER JOIN books as b on b.id = e.book_id
+ WHERE p.name = 'Random House' ;
+
+
+Q3
+ SELECT 
+ e.ISBN,b.title,s.stock,s.retail
+ FROM 
+  editions AS e
+  INNER JOIN publishers as p ON e.publisher_id = p.id
+    INNER JOIN books as b ON b.id = e.book_id
+      INNER JOIN stock as s ON s.isbn = e.isbn
+ WHERE p.name = 'Random House' ;
+
+
+Q4
+SELECT DISTINCT 
+e.ISBN,b.title,s.stock,s.retail
+FROM
+ editions AS e
+ INNER JOIN publishers as p ON e.publisher_id = p.id
+    INNER JOIN books as b ON b.id = e.book_id
+      INNER JOIN stock as s ON s.isbn = e.isbn
+WHERE p.name = 'Random House'AND
+ s.stock > 0;
+
+
+Q5
+SELECT
+b.title,e.type
+FROM
+  editions AS e
+  INNER JOIN books as b ON b.id = e.book_id
+
+Q6
+SELECT
+b.title,e.publication
+FROM
+  books as b
+  LEFT OUTER JOIN editions AS e ON b.id = e.book_id;
+
+
+Q7
+SELECT
+sum(stock) 
+FROM
+  stock AS s;
+
+
+Q8
+SELECT
+avg(cost) AS "average cost",avg(retail) AS "average_retail",avg(retail-cost) as "average_profit"
+FROM
+  stock as S;
+
+
+Q9
+SELECT 
+e.book_id,s.stock
+FROM 
+  stock AS s
+  INNER JOIN editions AS e on e.isbn = s.isbn
+ORDER BY s.stock desc
+LIMIT 5;
+
+
+Q10
+SELECT
+a.id AS "ID",(a.first_name||' '||last_name) AS "Full Name",COUNT(b.id) AS "Number of Books"
+FROM books AS b
+  LEFT OUTER JOIN authors AS a on b.author_id = a.id
+GROUP BY a.id
+
+
+Q11
+SELECT
+a.id AS "ID",(a.first_name||' '||last_name) AS "Full Name",COUNT(b.id) AS "Number of Books"
+FROM books AS b
+  LEFT OUTER JOIN authors AS a on b.author_id = a.id
+GROUP BY a.id
+ORDER BY COUNT(b.id) desc;
+
+
+
+

@@ -14,7 +14,7 @@ class Player
 
       self.shots_fired += 1 
       result = Board.play(position)
-      if result != nil
+      if !result.nil?
         @hits << position
         result
       else

@@ -14,6 +14,7 @@ describe Robot do
   describe "#wound" do
     it "decreases health" do
       @robot.wound(20)
+      
       expect(@robot.health).to eq(80)
     end
 
