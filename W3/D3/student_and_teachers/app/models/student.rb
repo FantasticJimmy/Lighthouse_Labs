@@ -2,6 +2,8 @@ class Student < ActiveRecord::Base
   # implement your Student model here
   belongs_to :teacher
   validates :email, format: { with: /.*@.*\.\D{2}/}, uniqueness: true
+  validate :cant_be_assigned_to_retired_teacher
+  after_save :last_student_added_at, if: :teacher 
   # validates :birthday
 
   # def store_must_have_one_type
@@ -9,10 +11,20 @@ class Student < ActiveRecord::Base
   #     errors.add(:mens_apparel, "You gotta at least sell to human being.")
   #   end
   # end
-                           
+  def cant_be_assigned_to_retired_teacher
+    if teacher && teacher.retirement_date
+      errors.add(:teacher_id,"Students cannot be assigned to retiring teachers.")
+    end
+  end
+
+  def last_student_added_at
+    teacher.last_student_added_at = Date.today
+    teacher.save
+  end
+                            
 
   def name
-    self.first_name + " " + self.last_name
+    first_name + " " + last_name
   end
 
   def age

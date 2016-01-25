@@ -1,12 +1,12 @@
 -- ================ --
 -- CUSTOM SQL QUERY --
--- QUESTION 11      --
+-- QUESTION 13      --
 -- ================ --
 --
 -- Execute this file directly against the SQLite3 database from the command line.
 -- From the test's root directory, type:
 --
--- sqlite3 db/questions.sqlite3 < spec/11.sql
+-- sqlite3 db/questions.sqlite3 < spec/13.sql
 --
 -- There are no automated tests for this question. You have to compare your result
 -- to the expected output.
@@ -16,7 +16,7 @@
 -- =============== --
 -- 
 -- The database schema is the same as before (see schema.rb). 
--- It has some seeded data in all the tables that you should quickly explore first
+-- It has some seeded data in all three tables that you should quickly explore first
 -- 
 -- To get familiar with the data in a quick and easy way, you can connect to the database via the SQLite3 REPL:
 -- From the test's root directory, type:
@@ -33,36 +33,36 @@
 -- Leave the following lines in so that the output is formatted in a readable way.
 .headers on
 .mode column
-.width 20
+.width 30
+
 -- ======== --
 -- QUESTION --
 -- ======== --
 --
--- Write a query that returns list of ALL employee first names along with the name of the store they are working at. 
--- Note: some employees are not assigned to a store, but should still be included in the result set.
+-- Take the query from Question 9, and then modify it in order to:
 -- 
+-- Narrow down the results such that only books that have more than 1 lend show up
 -- 
 -- =============== --
 -- EXPECTED OUTPUT --
 -- =============== --
 --
--- first_name            store_name
--- --------------------  ----------
--- Linda                 Muskoka   
--- Mark                  Muskoka   
--- Topi                  Muskoka   
--- Rebecca               Victoria  
--- Jane                  Victoria  
--- Robin                 Victoria  
--- Galinda               Victoria  
--- Tracey                Victoria  
--- Gordon                          
--- Bart 
+-- title                           num_lends 
+-- ------------------------------  ----------
+-- Fart noises                     3         
+-- I Win!                          2         
+-- 
 --
 -- ====================== --
 -- EDIT THE FOLLOWING SQL --
 -- ====================== --
 
-SELECT e.first_name, s.name FROM employees AS e LEFT OUTER JOIN stores AS s ON s.id=e.store_id;
+
+SELECT title,num_lends FROM 
+(SELECT b.title, count(l.book_id) AS num_lends FROM books AS b LEFT OUTER JOIN lends AS l
+on b.id = l.book_id GROUP BY b.title ORDER BY num_lends DESC)
+where num_lends > 1
+;
 
 
+ 

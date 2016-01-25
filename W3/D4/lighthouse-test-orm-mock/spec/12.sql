@@ -58,6 +58,5 @@
 -- EDIT THE FOLLOWING SQL --
 -- ====================== --
 
-SELECT name FROM  stores;
-
+select s.name,round(avg(e.hourly_rate),2),count(e.id) from stores as s inner join employees as e on s.id = e.store_id group by s.name;
 

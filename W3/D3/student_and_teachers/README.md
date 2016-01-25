@@ -175,7 +175,13 @@ Make the necessary changes to your code to support this new constraint on the da
 
 **Tip:** Once you are done, you should be able to do the following in your pry session:
 
-    pry(main)> first_student = Student.first
+    students = [{
+        ...
+      }, {
+        ...
+      }]
+
+    pry(main)> first_student = Student.first = Students.new(students[0])
     pry(main)> first_student.teacher = Teacher.first
     pry(main)> first_student.save!
     pry(main)> first_student.teacher

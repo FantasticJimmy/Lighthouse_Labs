@@ -55,7 +55,7 @@
 -- ====================== --
 -- EDIT THE FOLLOWING SQL --
 -- ====================== --
-
-SELECT name, female_employees, male_employees FROM stores;
+SELECT name,(female_employees+male_employees) as total_employees from stores;
+  
 
 
