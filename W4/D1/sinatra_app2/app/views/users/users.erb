@@ -1,0 +1,33 @@
+<% @songs.each do |song| %>
+
+  <div style="margin-left:2%;margin-right:2%;" class="media">
+    <div class="media-left">
+      <img src="drake.gif"> 
+    </div>
+    <div style="background-color:#E6E6E6" class="media-body">
+
+      <h6>
+        <span><%=((Time.now-song.created_at)/60).floor%> min ago</span>
+        <p>Added by: <%= song.user.name %></p>
+        <h4><a href="/songs/<%=song.id%>"><%= song.title %></a></h4> 
+        by <a href="/artists/<%=song.artist%>"><%= song.artist %></a>
+      </h6>
+
+      <% unless @user.upvotes.find_by(song_id: song.id) %>
+      <p><a href="/songs/upvote/<%=song.id%>" class="btn btn-success">Upvote</a><span class="label label-primary"><%=song.upvotes.count%></span> 
+      </p>
+      <% else %>
+      <p>You have voted once already.</p>
+      <p><span class="label label-primary"><%=song.upvotes.count%></span></p>
+      <% end %>
+      <h8>
+        <p>YouTube: <a href="<%= song.url%>"><%= song.url %></a>
+      </h8>
+
+
+    </div>
+  </div>
+<% end %>
+
+
+

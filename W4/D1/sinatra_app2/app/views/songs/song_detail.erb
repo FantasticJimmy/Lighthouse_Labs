@@ -1,0 +1,66 @@
+
+
+  <div style="margin-left:2%;margin-right:2%;" class="media">
+    <div class="media-left">
+      <img src="../drake.gif"> 
+    </div>
+    <div style="background-color:#E6E6E6" class="media-body">
+
+      <h6>
+        <span><%=((Time.now-@song.created_at)/60).floor%> min ago</span>
+        <p>Added by: <%= @song.user.name %></p>
+        <h4><%= @song.title %></a></h4> 
+        by <%= @song.artist %></a>
+      </h6>
+
+      <% unless @user.upvotes.find_by(song_id: @song.id) %>
+      <p><a href="/songs/upvote/<%=@song.id%>" class="btn btn-success">Upvote</a><span class="label label-primary"><%=@song.upvotes.count%></span> 
+      </p>
+      <% else %>
+      <p>You have voted once already.</p>
+      <p><span class="label label-primary"><%=@song.upvotes.count%></span></p>
+      <% end %>
+       <h8>
+        <p>YouTube: <a href="<%= @song.url%>"><%= @song.url %></a>
+        <%    
+          if @song.url
+             youtube_id = /\?v=.*/.match(@song.url)
+             youtube_id_after = youtube_id.to_s
+             youtube_id_after.slice!("?v=")
+          else  
+             youtube_id_after = ""
+          end
+           %>
+        <p><iframe width="560" height="315" src="https://www.youtube.com/embed/<%=youtube_id_after%>" frameborder="0" allowfullscreen></iframe>
+        </p>
+      </h8>
+    </div>
+  </div>
+
+ 
+
+  <form action="/songs/<%= @song.id %>" method="post">
+  <input type="number" name="your_awesome_parameter" id="some_id" class="rating" />
+    <div class="container">
+      <label for="inputHelpBlock">Post your comment here:</label>
+      <input type="text" id="inputHelpBlock" class="form-control" name="comment" >
+    </div>
+    <button type="submit" class="btn btn-default" style="margin-left:5%; margin-top:3%">Post</button>
+  </form>
+
+<% if @comments.empty?
+  else
+  @comments.each do |comment| %>
+  <blockquote>
+    <p><%=comment.comment%></p>
+    <p><footer><%=comment.user.name%></footer>
+    <% if @user.id == comment.user_id %>
+    <a href="/songs/current_user_delete_comment/<%=comment.id%>" class="btn btn-success">Delete</a>
+    <% end %>
+    </p>  
+  </blockquote>
+  <% end 
+  end%>
+
+
+
