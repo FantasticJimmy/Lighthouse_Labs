@@ -1,0 +1,20 @@
+<h1>Create a new post!</h1>
+<%= form_for @post do |f| %>
+  <div>
+    <%= f.label "title" %><br>
+    <%= f.text_field "title" %>
+  </div>
+  <div>
+    <%= f.label "author" %><br>
+    <%= f.text_field "author" %>
+  </div>
+
+  <div>
+    <%= f.label "text" %><br>
+    <%= f.text_field "text" %>
+  </div>
+  <div>
+    <%= f.submit "Save" %>
+  </div>
+<% end %> 
+    
