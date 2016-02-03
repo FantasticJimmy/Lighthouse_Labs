@@ -5,6 +5,8 @@ class Movie < ActiveRecord::Base
   validates :title,
     presence: true
 
+
+
   validates :director, presence: true
   validates :runtime_in_minutes, numericality: {only_integer: true}
   validates :description, presence: true
@@ -12,11 +14,21 @@ class Movie < ActiveRecord::Base
   validates :release_date, presence: true
   validate :release_date_in_the_past
 
+  mount_uploader :image, ImageUploader
+
   def review_average
     if reviews.size == 0
       0
     else
       reviews.sum(:rating_out_of_ten)/reviews.size
+    end
+  end
+
+  def self.search(search)
+    if search
+      self.where
+    else
+
     end
   end
 
@@ -27,7 +39,5 @@ class Movie < ActiveRecord::Base
       errors.add(:release_date, "should be in the past") if release_date >= Date.today
     end
   end 
-
-
 
 end

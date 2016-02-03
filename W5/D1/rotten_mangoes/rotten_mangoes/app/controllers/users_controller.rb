@@ -7,6 +7,7 @@ class UsersController < ApplicationController
     @user = User.new(user_params)
     if @user.save
       session[:user_id] = @user.id
+      binding.pry
        redirect_to movies_path, notice: "Welcome abord! #{@user.firstname} "
     else
       render :new

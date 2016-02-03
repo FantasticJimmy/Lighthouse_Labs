@@ -29,6 +29,13 @@ gem 'spring',        group: :development
 # Use ActiveModel has_secure_password
 gem 'bcrypt-ruby', '~> 3.1.2'
 
+gem 'carrierwave'
+
+gem "rmagick"
+
+gem 'pry', group: :development
+
+
 # Use unicorn as the app server
 # gem 'unicorn'
 
@@ -38,4 +45,3 @@ gem 'bcrypt-ruby', '~> 3.1.2'
 # Use debugger
 # gem 'debugger', group: [:development, :test]
 
-gem 'web-console', group: :development

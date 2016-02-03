@@ -2,7 +2,25 @@ class MoviesController < ApplicationController
 
   before_filter :restrict_access
   def index
-    @movies = Movie.all
+    if params[:title]
+      @movies = Movie.where("title LIKE ?","%#{params[:title]}%")
+    else 
+      @movies = Movie.all
+    end
+    if params[:director]
+      @movies = @movies.where("director LIKE ?","%#{params[:director]}%")
+    end
+
+    case params[:duration]
+      when "s"
+        @movies = @movies.where("runtime_in_minutes < 90")
+      when "m"
+        @movies = @movies.where("runtime_in_minutes >= 90 AND runtime_in_minutes <= 120")
+      when "l" 
+        @movies = @movies.where("runtime_in_minutes > 120")
+      else
+        @movies
+    end
   end
 
   def new
@@ -33,7 +51,7 @@ class MoviesController < ApplicationController
     if @movie.update_attributes(movie_params)
       redirect_to movies_path(@movie)
     else
-      reder :edit
+      render :edit
     end
   end
 
@@ -46,8 +64,7 @@ class MoviesController < ApplicationController
   protected
   def movie_params
     params.require(:movie).permit(
-      :title,:release_date,:director,:runtime_in_minutes,:poster_image_url,:description
-      )
+      :title,:release_date,:director,:runtime_in_minutes,:poster_image_url,:description, :image)
   end
 
 

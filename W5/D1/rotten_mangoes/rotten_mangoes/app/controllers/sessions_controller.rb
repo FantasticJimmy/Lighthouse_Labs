@@ -4,10 +4,13 @@ class SessionsController < ApplicationController
 
   def create
     user = User.find_by(email: params[:email])
-
     if user && user.authenticate(params[:password])
       session[:user_id] = user.id
-      redirect_to movies_path,notice: "Welcome back, #{user.firstname}!"
+      if user.admin
+        redirect_to admin_users_path, notice: "Welcome to the admin page, #{user.full_name}"
+      else
+        redirect_to movies_path,notice: "Welcome back, #{user.full_name}!"
+      end
     else
       render :new
     end
