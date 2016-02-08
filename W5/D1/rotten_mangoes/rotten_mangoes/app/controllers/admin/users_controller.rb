@@ -21,8 +21,17 @@ class Admin::UsersController < ApplicationController
 
   def destroy
     @user = User.find(params[:id])
-    @user.destroy
-    redirect_to admin_users_path
+    if @user.destroy
+      UserMailer.destroy_email(@user).deliver
+      redirect_to admin_users_path
+    end
+  end
+
+  def preview
+    me = current_user
+    session[:me] = me.id
+    session[:user_id] = params[:user_id]
+    redirect_to movies_path
   end
 
   protected

@@ -2,24 +2,16 @@ class MoviesController < ApplicationController
 
   before_filter :restrict_access
   def index
-    if params[:title]
-      @movies = Movie.where("title LIKE ?","%#{params[:title]}%")
+    if params[:title_director]
+      @movies = Movie.all.title_director_search(params[:title_director])
     else 
       @movies = Movie.all
     end
-    if params[:director]
-      @movies = @movies.where("director LIKE ?","%#{params[:director]}%")
-    end
-
-    case params[:duration]
-      when "s"
-        @movies = @movies.where("runtime_in_minutes < 90")
-      when "m"
-        @movies = @movies.where("runtime_in_minutes >= 90 AND runtime_in_minutes <= 120")
-      when "l" 
-        @movies = @movies.where("runtime_in_minutes > 120")
-      else
-        @movies
+    
+    if params[:duration]
+      @movies = @movies.length_search(qparams[:duration])
+    else
+      @movies
     end
   end
 

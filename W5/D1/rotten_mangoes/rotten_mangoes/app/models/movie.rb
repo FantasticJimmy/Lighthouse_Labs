@@ -16,6 +16,19 @@ class Movie < ActiveRecord::Base
 
   mount_uploader :image, ImageUploader
 
+  scope :title_director_search, ->(keyword){where("director LIKE ? OR title LIKE ?","%#{keyword}%","%#{keyword}%")}
+  scope :length_search, ->(size){
+    case size
+      when "s"
+        where("runtime_in_minutes < 90")
+      when "m"
+        where("runtime_in_minutes <= 120 AND runtime_in_minutes >= 90")
+      when "l"
+        where("runtime_in_minutes > 120")
+      when "all"
+        nil
+    end}
+
   def review_average
     if reviews.size == 0
       0
@@ -24,13 +37,6 @@ class Movie < ActiveRecord::Base
     end
   end
 
-  def self.search(search)
-    if search
-      self.where
-    else
-
-    end
-  end
 
   protected
 
